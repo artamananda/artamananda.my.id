@@ -3,87 +3,41 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!--stylesheet-->
-    <link rel="stylesheet" href="assets/css/style.css">
-
-    <!--bootstrap-->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-
-    <!--fontawesome-->
-    <link rel="stylesheet" href="assets/css/fontawesome.css">
-
-    <!--Fonts-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;700&display=swap" rel="stylesheet">
-
-    <!--Meta Data-->
-    <title>@artamananda | links</title>
-    <meta name="title" content="@artamananda">
-    <meta name="description" content="Future Software Engineer">
-
-    <meta name="keywords" content="Artamananda,Arta BEM KM UNSRI,Arta Lahat,Arta Palembang,Arta UNSRI,Arta Fasilkom Unsri">
-
-    <meta name="robots" content="index, follow">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="language" content="English">
-
-    <!-- google search console -->
-    <meta name="google-site-verification" content="4qglqwf-M9yvBKb7mcXq-RR5Pav7rK5aYrqAh2tO8eQ" />
-
-    <!-- Favicons -->
-    <link href="assets/img/icon.png" rel="icon">
-    <link href="assets/img/icon.png" rel="apple-touch-icon">
-
+    <title>@artamananda</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg">
+<body>
+    <div class="px-6 pt-8 pb-6">
+        <h3 class="text-xl text-center font-bold">Berikan pesan anonim kepada Arta</h3>
+    </div>
+    <div class="bg-gray-200 rounded-2xl p-8 text-center w-11/12 mx-auto">
+        <form action="https://artamananda.my.id/" onsubmit="return isValid(this.question.value)">
+          <div class="mb-3 text-center">
+            <label class="block text-gray-700 text-lg font-medium mb-2" for="question">
+              Pesanmu :
+            </label>
+            <textarea class="w-11/12 rounded-3xl shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="question" id="question" rows="4" placeholder="Tulis pesanmu disini ..."></textarea>
+          </div>
+          <div class="mb-4 text-center">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+              Kirim
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="px-6 pt-10 pb-4">
+        <h3 class="text-xl text-center font-bold">Pesan sebelumnya</h3>
+      </div>
+      <div id="x" class="x"></div>
 
-    <div class="space"></div>
-    <!-- Profile picture-->
-    <img src="assets/img/arta.jpg" alt="profile picture" class="profile-picture">
-
-    <!-- Profile name-->
-    <div class="profile-name"><b>ARTAMANANDA <img class="drag" src="assets/img/icons8-verified-badge-16.png " alt="verified" width="16" height="16"></b></div> 
-
-    <!-- Profile about-->
-    <div class="profile-about"><b>Future Software Engineer. 💻✈️</b></div>
-
-    <!-- Links-->
-    <a href="https://github.com/artamananda" target="_blank" class="links , hover">
-        <i class="fab fa-github , links-in"></i>
-        <b>GitHub</b></a>
-
-    <a href="https://twitter.com/artamananda" target="_blank" class="links , hover">
-        <i class="fab fa-twitter , links-in"></i>
-        <b>Twitter</b></a>
-
-    <a href="https://www.linkedin.com/in/artamananda/" target="_blank" class="links , hover">
-        <i class="fab fa-linkedin , links-in"></i>
-        <b>LinkedIn</b></a>
-
-    <a href="https://www.youtube.com/artamananda" target="_blank" class="links , hover">
-        <i class="fab fa-youtube , links-in"></i>
-        <b>Youtube</b></a>
-
-    <a href="https://www.facebook.com/artamananda" target="_blank" class="links , hover">
-        <i class="fab fa-facebook , links-in"></i>
-        <b>Facebook</b></a>
-
-    <div class="space"></div>
-   
-    <footer>
-        <!--bottom text-->
-        <a href="http://www.instagram.com/artamananda" class="link-hide">
-            <div class="bottom-text">
-                Copyright © 2022 arta corp.
-                powered ℗ by netlify
-            </div>
-        </a>
-    </footer>
-    
+      <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>  
+      <script src="https://sheet2api.com/v1/api.js"></script>
+      <script src="assets/js/read.js"></script>
+      <script src="assets/js/write.js"></script>
 </body>
 
 </html>
