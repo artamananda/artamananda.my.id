@@ -78,13 +78,13 @@ func sqlQueryGet()([]message, error) {
 func sqlQueryPost(question string){
 	db, err := connect()
     if err != nil {
-        panic(err)
+        log.Fatal(err) //after panic
     }
     defer db.Close()
 
     _, err = db.Exec("insert into messages (question) values ($1)", question)
     if err != nil {
-        panic(err)
+        log.Fatal(err) //after panic
     }
 }
 
