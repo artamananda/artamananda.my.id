@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {{template "header"}}
     <title>@artamananda | Send a message</title>
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.png" />
-    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
   <body>
@@ -16,10 +12,7 @@
       </h3>
     </div>
     <div class="bg-gray-200 rounded-2xl p-8 text-center w-11/12 mx-auto">
-      <form
-        action="https://artamananda.my.id/"
-        onsubmit="return isValid(this.question.value)"
-      >
+      <form action="/process" method="post">
         <div class="mb-3 text-center">
           <label
             class="block text-gray-700 text-lg font-medium mb-2"
@@ -48,20 +41,14 @@
     <div class="px-6 pt-10 pb-4">
       <h3 class="text-xl text-center font-bold">Pesan sebelumnya</h3>
     </div>
-    <div id="x" class="x"></div>
-    <div class="w-10/12 text-center m-auto p-8">
-      <div class="text-center">
-        Copyright © Artamananda 2022. Powered ℗ by Netlify
-      </div>
+    {{range $element := .}}
+    <div
+      id="quest"
+      class="font-bold bg-gray-200 rounded-2xl p-8 my-4 w-11/12 mx-auto"
+    >
+      <div class="font-light">{{$element.created_at}}</div>
+      {{$element.question}}
     </div>
-
-    <script
-      src="https://code.jquery.com/jquery-3.6.3.min.js"
-      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://sheet2api.com/v1/api.js"></script>
-    <script src="../assets/js/read.js"></script>
-    <script src="../assets/js/write.js"></script>
+    {{end}} {{template "footer"}}
   </body>
 </html>
