@@ -100,10 +100,10 @@ func routeIndexGet(w http.ResponseWriter, r *http.Request) {
 			data[i]["created_at"] = qData[len(qData)-1-i].created_at.Format("2006-01-02  [15:04:05]")
 			data[i]["question"] = qData[len(qData)-1-i].question
 		}
-        var file = filepath.Join("/","views", "message.html")
-		var header = filepath.Join("/","views", "header.html")
-		var footer = filepath.Join("/","views", "footer.html")
-		var tmpl = template.Must(template.ParseFiles(file,header,footer))
+        var file = filepath.Join("views", "message.html")
+		var header = filepath.Join("views", "header.html")
+		var footer = filepath.Join("views", "footer.html")
+		var tmpl = template.Must(template.ParseFiles(file, header,footer))
 		err = tmpl.Execute(w, data)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
