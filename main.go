@@ -3,10 +3,10 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"path"
-	"text/template"
 	"time"
 
 	_ "github.com/lib/pq"
