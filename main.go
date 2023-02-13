@@ -15,6 +15,7 @@ import (
 func main(){
 	http.HandleFunc("/", routeIndexGet)
     http.HandleFunc("/process", routeSubmitPost)
+    http.HandleFunc("/favicon.ico", faviconHandler)
 	
 	
 	fmt.Println("server started at localhost:9990")
@@ -132,4 +133,8 @@ func routeSubmitPost(w http.ResponseWriter, r *http.Request) {
 	
 	w.WriteHeader(http.StatusBadRequest)
 	
+}
+
+func faviconHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "/home/user/go/src/artamananda.my.id/assets/img/favicon.png")
 }
