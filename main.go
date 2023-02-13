@@ -106,7 +106,8 @@ func routeIndexGet(w http.ResponseWriter, r *http.Request) {
 		var tmpl = template.Must(template.ParseFiles(file, header,footer))
 		err = tmpl.Execute(w, data)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
 		}
 		return
     }
