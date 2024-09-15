@@ -1,0 +1,28 @@
+# fly.toml app configuration file generated for artamananda-my-id on 2024-09-15T21:30:47+07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'artamananda-my-id'
+primary_region = 'sin'
+
+[build]
+  dockerfile = "Dockerfile"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = false
+  min_machines_running = 0
+  processes = ['app']
+
+[[services.ports]]
+  handlers = ["http"]
+  start_port = 3000
+  end_port = 3000
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 256

@@ -17,7 +17,7 @@ export default function Home() {
 
   const fetchVisitors = async () => {
     try {
-      const res = await fetch(`${process.env.BASE_API_URL}/api/visitors`);
+      const res = await fetch(`${process.env.BASE_API_URL}/visitors`);
       const result = await res.json();
       setOnline(result?.payload?.onlineVisitors);
       setTotal(result?.payload?.totalVisitors);

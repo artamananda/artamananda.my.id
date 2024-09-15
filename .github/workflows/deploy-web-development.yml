@@ -1,0 +1,50 @@
+name: Fly Deploy
+on:
+  push:
+    branches:
+      - development
+  workflow_dispatch:
+
+permissions: write-all
+
+concurrency:
+  group: "${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy Web Development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: culshaw/read-package-node-version-actions@v1
+        id: package-json
+
+      - name: Show version number
+        run: echo "${{ steps.package-json.outputs.version }}"
+
+      - name: "cat package.json"
+        run: cat ./package.json
+
+      - name: "Create .env file"
+        run: |
+          touch .env.production
+          echo NODE_ENV=production >> .env.production
+          echo STAGE=production >> .env.production
+          echo HTTP_PORT=3000 >> .env.production
+          echo APP_NAME=Artamananda >> .env.production
+          echo APP_VERSION=${{ steps.package-json.outputs.version }} >> .env.production
+          echo BASE_API_URL=${{ secrets.BASE_API_URL }} >> .env.production
+          echo DB_HOST=${{ secrets.DB_HOST }} >> .env.production
+          echo DB_USER=${{ secrets.DB_USER }} >> .env.production
+          echo DB_PASS=${{ secrets.DB_PASS }} >> .env.production
+          echo DB_NAME=${{ secrets.DB_NAME }} >> .env.production
+          echo DB_PORT=5432 >> .env.production
+          echo DB_DIALECT=postgres >> .env.production
+          cat .env.production
+
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
