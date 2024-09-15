@@ -29,14 +29,6 @@ RUN yarn install --frozen-lockfile --production=false
 # Copy application code
 COPY --link . .
 
-# # Set environment mode for migrations
-# ARG MODE=production
-# ENV MODE=${MODE}
-# ENV ENV_PATH=.env.${MODE}
-
-# # Run sequelize-cli migrations
-# RUN npx sequelize-cli db:migrate --env ${MODE}
-
 # Build application
 RUN yarn run build
 
@@ -49,6 +41,12 @@ FROM base
 # Copy built application
 COPY --from=build /app /app
 
+# Copy the deploy script
+COPY deploy.sh /app/
+
+# Ensure the deploy script is executable
+RUN chmod +x /app/deploy.sh
+
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD [ "yarn", "run", "start" ]
+CMD ["sh", "-c", "/app/deploy.sh"]
