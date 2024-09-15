@@ -29,13 +29,13 @@ RUN yarn install --frozen-lockfile --production=false
 # Copy application code
 COPY --link . .
 
-# Set environment mode for migrations
-ARG MODE=production
-ENV MODE=${MODE}
-ENV ENV_PATH=.env.${MODE}
+# # Set environment mode for migrations
+# ARG MODE=production
+# ENV MODE=${MODE}
+# ENV ENV_PATH=.env.${MODE}
 
-# Run sequelize-cli migrations
-RUN npx sequelize-cli db:migrate --env ${MODE}
+# # Run sequelize-cli migrations
+# RUN npx sequelize-cli db:migrate --env ${MODE}
 
 # Build application
 RUN yarn run build
