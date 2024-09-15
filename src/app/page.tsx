@@ -5,22 +5,52 @@ import ListButton from "./components/ListButton";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import Footer from "./components/Footer";
+import toast, { Toaster } from "react-hot-toast";
 
 const Visitor = dynamic(() => import("./components/Visitor"), { ssr: false });
 
 export default function Home() {
   const [online, setOnline] = useState(0);
   const [total, setTotal] = useState(0);
+  const [isOnline, setIsOnline] = useState<boolean>(true);
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
   const fetchVisitors = async () => {
-    const res = await fetch(`${process.env.BASE_API_URL}/api/visitors`);
-    const result = await res.json();
-    setOnline(result?.payload?.onlineVisitors);
-    setTotal(result?.payload?.totalVisitors);
+    try {
+      const res = await fetch(`${process.env.BASE_API_URL}/api/visitors`);
+      const result = await res.json();
+      setOnline(result?.payload?.onlineVisitors);
+      setTotal(result?.payload?.totalVisitors);
+      if (result) {
+        setIsOnline(true);
+      }
+    } catch (error) {
+      setIsOnline(false);
+    }
   };
 
   useEffect(() => {
     fetchVisitors();
+
+    const intervalId = setInterval(() => {
+      fetchVisitors();
+    }, 5000);
+
+    setIsFirstRender(false);
+
+    return () => clearInterval(intervalId);
   }, []);
+
+  useEffect(() => {
+    if (!isFirstRender) {
+      if (isOnline) {
+        toast.success("You're Online");
+      } else {
+        toast.error("You're Offline");
+      }
+    }
+  }, [isOnline]);
+
   return (
     <div
       style={{
@@ -32,6 +62,7 @@ export default function Home() {
         minHeight: "100vh",
       }}
     >
+      <Toaster />
       <div
         style={{
           display: "flex",

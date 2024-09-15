@@ -14,6 +14,7 @@ const ListButton = (props: { title: string; href: string }) => {
         cursor: "pointer",
       }}
       href={props.href}
+      target="_blank"
     >
       {props.title}
     </Link>
