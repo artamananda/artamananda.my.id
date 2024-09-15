@@ -1,6 +1,26 @@
+"use client";
+
 import Image from "next/image";
 import ListButton from "./components/ListButton";
+import dynamic from "next/dynamic";
+import React, { useEffect, useState } from "react";
+import Footer from "./components/Footer";
+
+const Visitor = dynamic(() => import("./components/Visitor"), { ssr: false });
+
 export default function Home() {
+  const [online, setOnline] = useState(0);
+  const [total, setTotal] = useState(0);
+  const fetchVisitors = async () => {
+    const res = await fetch(`${process.env.BASE_API_URL}/api/visitors`);
+    const result = await res.json();
+    setOnline(result?.payload?.onlineVisitors);
+    setTotal(result?.payload?.totalVisitors);
+  };
+
+  useEffect(() => {
+    fetchVisitors();
+  }, []);
   return (
     <div
       style={{
@@ -49,15 +69,21 @@ export default function Home() {
         </div>
         <ListButton title="LinkedIn" href="/linkedin" />
         <ListButton title="GitHub" href="/github" />
-        <div>
-          <div>0 is Live</div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 30,
+            paddingBlock: 20,
+          }}
+        >
+          <Visitor total={online} title="Online" />
+          <Visitor total={total} title="Total Visitors" />
         </div>
       </div>
-      <footer style={{ margin: 20 }}>
-        <div style={{ textAlign: "center" }}>
-          {`Copyright © 2024 Artamananda v${process.env.APP_VERSION} All rights reserved`}
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
