@@ -41,12 +41,6 @@ FROM base
 # Copy built application
 COPY --from=build /app /app
 
-# Copy the deploy script
-COPY deploy.sh /app/
-
-# Ensure the deploy script is executable
-RUN chmod +x /app/deploy.sh
-
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["sh", "-c", "/app/deploy.sh"]
+CMD ["yarn", "run", "start:prod"]
