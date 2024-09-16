@@ -29,21 +29,16 @@ jobs:
 
       - name: "Create .env file"
         run: |
-          touch .env.production
-          echo NODE_ENV=production >> .env.production
-          echo STAGE=production >> .env.production
-          echo HTTP_PORT=3000 >> .env.production
-          echo APP_NAME=Artamananda >> .env.production
-          echo APP_VERSION=${{ steps.package-json.outputs.version }} >> .env.production
-          echo BASE_API_URL=${{ secrets.BASE_API_URL }} >> .env.production
-          echo STORAGE_URL=${{ secrets.STORAGE_URL }} >> .env.production
-          echo DB_HOST=${{ secrets.DB_HOST }} >> .env.production
-          echo DB_USER=${{ secrets.DB_USER }} >> .env.production
-          echo DB_PASS=${{ secrets.DB_PASS }} >> .env.production
-          echo DB_NAME=${{ secrets.DB_NAME }} >> .env.production
-          echo DB_PORT=5432 >> .env.production
-          echo DB_DIALECT=postgres >> .env.production
-          cat .env.production
+          touch .env
+          echo NODE_ENV=production >> .env
+          echo STAGE=production >> .env
+          echo HTTP_PORT=3000 >> .env
+          echo APP_NAME=Artamananda >> .env
+          echo APP_VERSION=${{ steps.package-json.outputs.version }} >> .env
+          echo BASE_API_URL=${{ secrets.BASE_API_URL }} >> .env
+          echo STORAGE_URL=${{ secrets.STORAGE_URL }} >> .env
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
+          cat .env
 
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --remote-only
