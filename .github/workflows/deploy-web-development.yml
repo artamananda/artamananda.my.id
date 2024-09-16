@@ -36,6 +36,7 @@ jobs:
           echo APP_NAME=Artamananda >> .env.production
           echo APP_VERSION=${{ steps.package-json.outputs.version }} >> .env.production
           echo BASE_API_URL=${{ secrets.BASE_API_URL }} >> .env.production
+          echo STORAGE_URL=${{ secrets.STORAGE_URL }} >> .env.production
           echo DB_HOST=${{ secrets.DB_HOST }} >> .env.production
           echo DB_USER=${{ secrets.DB_USER }} >> .env.production
           echo DB_PASS=${{ secrets.DB_PASS }} >> .env.production
