@@ -74,7 +74,7 @@ export default function Home() {
         }}
       >
         <Image
-          src="/assets/profil.jpg"
+          src={`${process.env.STORAGE_URL}/profile.jpg`}
           alt="profile-pict"
           width={150}
           height={150}
@@ -92,7 +92,7 @@ export default function Home() {
         >
           <h3 style={{ textAlign: "center" }}>Artamananda</h3>
           <Image
-            src="/assets/verified.png"
+            src={`${process.env.STORAGE_URL}/verified.png`}
             alt="verified"
             width={20}
             height={20}
