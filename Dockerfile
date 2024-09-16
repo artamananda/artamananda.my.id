@@ -20,8 +20,7 @@ FROM base as build
 
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3 && \
-    apt-get install -y openssl
+    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
 
 # Install node modules
 COPY --link package.json yarn.lock ./
@@ -38,6 +37,9 @@ RUN yarn install --production=true
 
 # Final stage for app image
 FROM base
+
+RUN apt-get update -y
+RUN apt-get install -y openssl
 
 # Copy built application
 COPY --from=build /app /app
