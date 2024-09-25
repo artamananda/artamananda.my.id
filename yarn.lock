@@ -3347,6 +3347,11 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
+user-agent@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/user-agent/-/user-agent-1.0.4.tgz#61201431fc7e84ea4a5e1e76392f163a1539c9a4"
+  integrity sha512-NPTnJ89e6ttUK+Q3ZQ6aMFo4+4HAdvsb39IypyRw/bPjE/F8TjeVpB8uqFPnUCVbI6247qPryd8OLpkEYuOwWg==
+
 which-boxed-primitive@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/which-boxed-primitive/-/which-boxed-primitive-1.0.2.tgz#13757bc89b209b049fe5d86430e21cf40a89a8e6"

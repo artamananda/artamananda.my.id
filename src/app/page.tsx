@@ -17,7 +17,9 @@ export default function Home() {
 
   const fetchVisitors = async () => {
     try {
-      const res = await fetch(`${process.env.BASE_API_URL}/visitors`);
+      const res = await fetch(`${process.env.BASE_API_URL}/visitors`, {
+        method: "GET",
+      });
       const result = await res.json();
       setOnline(result?.payload?.onlineVisitors);
       setTotal(result?.payload?.totalVisitors);
@@ -29,6 +31,12 @@ export default function Home() {
     }
   };
 
+  const postVisitors = async () => {
+    await fetch(`${process.env.BASE_API_URL}/visitors`, {
+      method: "POST",
+    });
+  };
+
   useEffect(() => {
     fetchVisitors();
 
@@ -36,7 +44,10 @@ export default function Home() {
       fetchVisitors();
     }, 5000);
 
-    setIsFirstRender(false);
+    if (isFirstRender) {
+      postVisitors();
+      setIsFirstRender(false);
+    }
 
     return () => clearInterval(intervalId);
   }, []);
@@ -77,6 +88,7 @@ export default function Home() {
         <Image
           src={`${process.env.STORAGE_URL}/profile.jpg`}
           width={150}
+          preview={false}
           style={{
             borderRadius: "50%",
             marginInline: "auto",
