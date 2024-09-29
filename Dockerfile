@@ -29,6 +29,9 @@ RUN yarn install --frozen-lockfile --production=false
 # Copy application code
 COPY --link . .
 
+# Generate Prisma client
+RUN yarn prisma generate
+
 # Build application
 RUN yarn run build
 
