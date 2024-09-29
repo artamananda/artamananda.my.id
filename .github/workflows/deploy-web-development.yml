@@ -18,6 +18,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: "Automated Version Bump"
+        uses: "phips28/gh-action-bump-version@master"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          minor-wording: "add,Adds,new,feat,feature"
+          major-wording: "MAJOR,cut-major"
+          patch-wording: "patch,fixes,fix,adjust"
+          rc-wording: "RELEASE,alpha"
+          target-branch: "main"
+          commit-message: "CI: bumps version to {{version}} [skip ci]"
+
       - uses: culshaw/read-package-node-version-actions@v1
         id: package-json
 
