@@ -27,7 +27,7 @@ jobs:
           major-wording: "MAJOR,cut-major"
           patch-wording: "patch,fixes,fix,adjust"
           rc-wording: "RELEASE,alpha"
-          target-branch: "main"
+          target-branch: "development"
           commit-message: "CI: bumps version to {{version}} [skip ci]"
 
       - uses: culshaw/read-package-node-version-actions@v1
