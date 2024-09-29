@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../prisma/client";
-const userAgent = require("user-agent");
 
 export async function GET() {
   const visitorCount = await prisma.visitor.count();
@@ -16,10 +15,10 @@ export async function GET() {
   return NextResponse.json(status);
 }
 
-export async function POST(req: any) {
-  const ip = req.headers.get("x-forwarded-for") || req.ip;
+export async function POST(req: Request) {
+  const ip = req.headers.get("x-forwarded-for");
 
-  const ua = userAgent.parse(req.headers.get("user-agent"));
+  const ua = req.headers.get("user-agent");
 
   await prisma.visitor.create({
     data: {
