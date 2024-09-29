@@ -12,6 +12,7 @@ const ListButton = (props: { title: string; href: string }) => {
         textAlign: "center",
         fontWeight: "bold",
         cursor: "pointer",
+        width: "50vw",
       }}
       href={props.href}
       target="_blank"
