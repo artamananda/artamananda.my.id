@@ -1,12 +1,14 @@
 import Link from "next/link";
+import getColor from "../assets/color/color";
 
 const ListButton = (props: { title: string; href: string }) => {
+  const { textColor, bgColor } = getColor();
   return (
     <Link
       style={{
         borderRadius: 20,
-        backgroundColor: "white",
-        color: "black",
+        backgroundColor: textColor,
+        color: bgColor,
         paddingInline: 20,
         paddingBlock: 10,
         textAlign: "center",
