@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const getColor = () => {
+const useColor = () => {
   const [bgColor, setBgColor] = useState<string>("white");
   const [textColor, setTextColor] = useState<string>("black");
 
@@ -13,4 +13,4 @@ const getColor = () => {
   return { bgColor, textColor };
 };
 
-export default getColor;
+export default useColor;
