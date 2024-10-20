@@ -1,8 +1,10 @@
 "use client";
 
 import AnimatedNumbers from "react-animated-numbers";
+import getColor from "../assets/color/color";
 
 const Visitor = (props: { title: string; total: number }) => {
+  const { textColor } = getColor();
   return (
     <div
       style={{
@@ -30,7 +32,7 @@ const Visitor = (props: { title: string; total: number }) => {
           animateToNumber={props.total}
           fontStyle={{
             fontSize: 40,
-            color: "white",
+            color: textColor,
           }}
         />
       </div>
