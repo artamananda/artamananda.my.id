@@ -1,7 +1,7 @@
 "use client";
 
 import AnimatedNumbers from "react-animated-numbers";
-import getColor from "../assets/color/color";
+import getColor from "../hooks/useColor";
 
 const Visitor = (props: { title: string; total: number }) => {
   const { textColor } = getColor();

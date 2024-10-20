@@ -1,5 +1,5 @@
 import Link from "next/link";
-import getColor from "../assets/color/color";
+import getColor from "../hooks/useColor";
 
 const ListButton = (props: { title: string; href: string }) => {
   const { textColor, bgColor } = getColor();
