@@ -1,8 +1,6 @@
-# syntax = docker/dockerfile:1
-
 # Adjust NODE_VERSION as desired
 ARG NODE_VERSION=20.17.0
-FROM node:${NODE_VERSION}-slim as base
+FROM node:${NODE_VERSION}-alpine as base
 
 LABEL fly_launch_runtime="Next.js"
 
@@ -14,39 +12,34 @@ ENV NODE_ENV="production"
 ARG YARN_VERSION=1.22.19
 RUN npm install -g yarn@$YARN_VERSION --force
 
-
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
 # Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
+RUN apk add --no-cache --virtual .build-deps build-base python3
 
 # Install node modules
-COPY --link package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production=false
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 # Copy application code
-COPY --link . .
+COPY . .
 
 # Generate Prisma client
 RUN yarn prisma generate
 
 # Build application
-RUN yarn run build
+RUN yarn build
 
-# Remove development dependencies
-RUN yarn install --production=true
+# Remove build dependencies
+RUN apk del .build-deps
 
 # Final stage for app image
 FROM base
-
-RUN apt-get update -y
-RUN apt-get install -y openssl
 
 # Copy built application
 COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["yarn", "run", "start:prod"]
+CMD ["yarn", "start:prod"]
