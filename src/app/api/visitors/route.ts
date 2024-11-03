@@ -2,13 +2,23 @@ import { NextResponse } from "next/server";
 import prisma from "../../../../prisma/client";
 
 export async function GET() {
+  const currentTime = new Date();
+  const thresholdTime = new Date(currentTime.getTime() - 10000);
+
   const visitorCount = await prisma.visitor.count();
+  const onlineVisitorCount = await prisma.visitor.count({
+    where: {
+      updatedAt: {
+        gte: thresholdTime,
+      },
+    },
+  });
 
   const status = {
     code: 200,
     message: "success",
     payload: {
-      onlineVisitors: 1,
+      onlineVisitors: onlineVisitorCount,
       totalVisitors: visitorCount,
     },
   };
@@ -16,20 +26,46 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const ip = req.headers.get("x-forwarded-for");
+  try {
+    const ip = req.headers.get("x-forwarded-for");
 
-  const ua = req.headers.get("user-agent");
+    const ua = req.headers.get("user-agent");
 
-  await prisma.visitor.create({
-    data: {
-      metadata: {
-        ip: ip,
-        device: ua,
+    const res = await prisma.visitor.findFirst({
+      where: {
+        ipAddress: ip!,
       },
-      updatedAt: new Date(),
-      createdAt: new Date(),
-    },
-  });
+    });
 
-  return NextResponse.json({ message: "Visitor data has been logged." });
+    if (res) {
+      await prisma.visitor.update({
+        where: {
+          id: res.id,
+        },
+        data: {
+          metadata: {
+            ip: ip,
+            device: ua,
+          },
+          updatedAt: new Date(),
+        },
+      });
+    } else {
+      await prisma.visitor.create({
+        data: {
+          metadata: {
+            ip: ip,
+            device: ua,
+          },
+          ipAddress: ip!,
+          updatedAt: new Date(),
+          createdAt: new Date(),
+        },
+      });
+    }
+
+    return NextResponse.json({ message: "Visitor data has been logged." });
+  } catch (e) {
+    return NextResponse.json({ message: "Failed to log visitor data." });
+  }
 }

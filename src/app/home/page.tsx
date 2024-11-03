@@ -1,13 +1,15 @@
 "use client";
 
 import { Image } from "antd";
-import ListButton from "./components/ListButton";
+import ListButton from "../components/ListButton";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
-import Footer from "./components/Footer";
+import Footer from "../components/Footer";
 import toast, { Toaster } from "react-hot-toast";
+import "react-chrome-dino-ts/index.css";
 
-const Visitor = dynamic(() => import("./components/Visitor"), { ssr: false });
+const Visitor = dynamic(() => import("../components/Visitor"), { ssr: false });
+const DinoGame = dynamic(() => import("react-chrome-dino-ts"), { ssr: false });
 
 export default function Home() {
   const [online, setOnline] = useState(0);
@@ -21,9 +23,9 @@ export default function Home() {
         method: "GET",
       });
       const result = await res.json();
-      setOnline(result?.payload?.onlineVisitors);
-      setTotal(result?.payload?.totalVisitors);
-      if (result) {
+      if (result?.payload) {
+        setOnline(result.payload.onlineVisitors || 0);
+        setTotal(result.payload.totalVisitors || 0);
         setIsOnline(true);
       }
     } catch (error) {
@@ -32,15 +34,18 @@ export default function Home() {
   };
 
   const postVisitors = async () => {
-    await fetch(`${process.env.BASE_API_URL}/visitors`, {
-      method: "POST",
-    });
+    try {
+      await fetch(`${process.env.BASE_API_URL}/visitors`, {
+        method: "POST",
+      });
+    } catch (error) {}
   };
 
   useEffect(() => {
     fetchVisitors();
 
     const intervalId = setInterval(() => {
+      postVisitors();
       fetchVisitors();
     }, 5000);
 
@@ -66,11 +71,12 @@ export default function Home() {
     <div
       style={{
         display: "flex",
+        flex: 1,
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
         padding: 10,
-        minHeight: "100vh",
+        height: "100vh",
       }}
     >
       <Toaster />
@@ -82,7 +88,7 @@ export default function Home() {
           width: "50vw",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: 30,
+          marginTop: 20,
         }}
       >
         <Image
@@ -111,8 +117,8 @@ export default function Home() {
             preview={false}
           />
         </div>
-        <ListButton title="LinkedIn" href="/linkedin" />
-        <ListButton title="GitHub" href="/github" />
+        <ListButton title="LinkedIn" href="/home/linkedin" />
+        <ListButton title="GitHub" href="/home/github" />
         <div
           style={{
             display: "flex",
@@ -127,6 +133,25 @@ export default function Home() {
           <Visitor total={total} title="Total Visitors" />
         </div>
       </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          fontSize: 11,
+          flex: 1,
+          marginTop: -50,
+        }}
+      >
+        <DinoGame
+          instructions={
+            "On your pocket wizard (mobile), just give the screen a tap-tap to make the Dino soar over pesky obstacles, but if you’re on a big ol' laptop, hit that spacebar like it owes you money to get your Dino jumping!"
+          }
+        />
+      </div>
+
       <Footer />
     </div>
   );
