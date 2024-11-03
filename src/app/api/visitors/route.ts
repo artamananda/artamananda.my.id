@@ -26,6 +26,7 @@ export async function POST(req: Request) {
         ip: ip,
         device: ua,
       },
+      ipAddress: ip!,
       updatedAt: new Date(),
       createdAt: new Date(),
     },
