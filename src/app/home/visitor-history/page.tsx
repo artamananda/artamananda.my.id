@@ -32,7 +32,7 @@ const VisitorHistoryPage = () => {
 
   const fetchVisitors = async () => {
     try {
-      const res = await fetch(`${process.env.BASE_API_URL}/last-visitors`, {
+      const res = await fetch(`${process.env.BASE_API_URL}/histories`, {
         method: "GET",
       });
       const result = await res.json();
