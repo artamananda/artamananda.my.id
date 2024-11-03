@@ -34,15 +34,18 @@ export default function Home() {
   };
 
   const postVisitors = async () => {
-    await fetch(`${process.env.BASE_API_URL}/visitors`, {
-      method: "POST",
-    });
+    try {
+      await fetch(`${process.env.BASE_API_URL}/visitors`, {
+        method: "POST",
+      });
+    } catch (error) {}
   };
 
   useEffect(() => {
     fetchVisitors();
 
     const intervalId = setInterval(() => {
+      postVisitors();
       fetchVisitors();
     }, 5000);
 
