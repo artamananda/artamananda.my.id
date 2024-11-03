@@ -76,7 +76,7 @@ export default function Home() {
         justifyContent: "space-between",
         alignItems: "center",
         padding: 10,
-        height: "100vh",
+        minHeight: "100vh",
       }}
     >
       <Toaster />
