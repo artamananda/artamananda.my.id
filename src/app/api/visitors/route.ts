@@ -2,27 +2,34 @@ import { NextResponse } from "next/server";
 import prisma from "../../../../prisma/client";
 
 export async function GET() {
-  const currentTime = new Date();
-  const thresholdTime = new Date(currentTime.getTime() - 10000);
+  try {
+    const currentTime = new Date();
+    const thresholdTime = new Date(currentTime.getTime() - 10000);
 
-  const visitorCount = await prisma.visitor.count();
-  const onlineVisitorCount = await prisma.visitor.count({
-    where: {
-      updatedAt: {
-        gte: thresholdTime,
+    const visitorCount = await prisma.visitor.count();
+    const onlineVisitorCount = await prisma.visitor.count({
+      where: {
+        updatedAt: {
+          gte: thresholdTime,
+        },
       },
-    },
-  });
+    });
 
-  const status = {
-    code: 200,
-    message: "success",
-    payload: {
-      onlineVisitors: onlineVisitorCount,
-      totalVisitors: visitorCount,
-    },
-  };
-  return NextResponse.json(status);
+    const status = {
+      code: 200,
+      message: "success",
+      payload: {
+        onlineVisitors: onlineVisitorCount,
+        totalVisitors: visitorCount,
+      },
+    };
+    return NextResponse.json(status);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(req: Request) {
