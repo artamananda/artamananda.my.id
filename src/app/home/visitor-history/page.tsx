@@ -27,7 +27,7 @@ const columns = [
 ];
 
 const VisitorHistoryPage = () => {
-  const { bgColor, textColor } = getColor();
+  const { textColor } = getColor();
   const [visitors, setVisitors] = useState<Visitor[]>([]);
 
   const fetchVisitors = async () => {
@@ -56,7 +56,7 @@ const VisitorHistoryPage = () => {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", padding: 40, backgroundColor: bgColor }}>
+    <div style={{ minHeight: "100vh", padding: 40 }}>
       <Title style={{ color: textColor }}>Visitor History</Title>
       <Text style={{ color: textColor }}>Last 24 Hour Visitor Data</Text>
       <Table

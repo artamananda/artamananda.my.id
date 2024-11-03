@@ -25,10 +25,11 @@ export async function GET() {
     };
     return NextResponse.json(status);
   } catch (error) {
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    const status = {
+      code: 500,
+      message: "internal server error",
+    };
+    return NextResponse.json(status);
   }
 }
 
