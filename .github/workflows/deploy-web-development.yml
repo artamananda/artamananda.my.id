@@ -29,6 +29,7 @@ jobs:
           rc-wording: "RELEASE,alpha"
           target-branch: "development"
           commit-message: "CI: bumps version to {{version}} [skip ci]"
+          bump-policy: "last-commit"
 
       - uses: culshaw/read-package-node-version-actions@v1
         id: package-json
