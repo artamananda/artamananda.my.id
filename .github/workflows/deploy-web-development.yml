@@ -18,6 +18,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Pull latest changes
+        run: |
+          git fetch origin
+          git checkout development
+          git pull origin development
+
       - name: "Automated Version Bump"
         uses: "phips28/gh-action-bump-version@master"
         env:
@@ -29,7 +35,6 @@ jobs:
           rc-wording: "RELEASE,alpha"
           target-branch: "development"
           commit-message: "CI: bumps version to {{version}} [skip ci]"
-          bump-policy: "last-commit"
 
       - uses: culshaw/read-package-node-version-actions@v1
         id: package-json
