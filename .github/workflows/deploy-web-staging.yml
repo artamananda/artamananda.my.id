@@ -79,7 +79,7 @@ jobs:
           username: ${{ secrets.SSH_USER_STAGING }}
           port: ${{ secrets.SSH_PORT_STAGING }}
           password: ${{ secrets.SSH_PASS_STAGING }}
-          source: "./,!node_modules"
+          source: "."
           target: "/var/www/html/apps/arta-web"
           rm: true
 
@@ -94,8 +94,5 @@ jobs:
             cd /var/www/html/apps/arta-web
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            yarn install
-            # sudo kill -9 `sudo lsof -t -i:3000`
             pm2 delete arta-web
-            # pm2 start yarn --name arta-web -- start -- -p 3000
             pm2 start
