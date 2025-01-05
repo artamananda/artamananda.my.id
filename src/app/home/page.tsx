@@ -117,6 +117,7 @@ export default function Home() {
             preview={false}
           />
         </div>
+        <ListButton title="Uptime Server" href="/home/uptime" isNew />
         <ListButton title="LinkedIn" href="/home/linkedin" />
         <ListButton title="GitHub" href="/home/github" />
         <div
