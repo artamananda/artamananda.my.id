@@ -75,9 +75,10 @@ jobs:
 
           # Check if the IP is IPv6 or IPv4
           if [[ $IP_ADDRESS =~ : ]]; then
+            IPV6="[$IP_ADDRESS]"
             echo "IPv6 detected: $IP_ADDRESS. Continuing the process."
             echo "SSH_HOST=$IP_ADDRESS" >> $GITHUB_ENV
-            echo "SSH_HOST_V6=[${IP_ADDRESS}]" >> $GITHUB_ENV
+            echo "SSH_HOST_V6=$IPV6" >> $GITHUB_ENV
           else
             echo "IPv4 detected: $IP_ADDRESS. Stopping the process."
             exit 0  # Exit the workflow if it's IPv4
