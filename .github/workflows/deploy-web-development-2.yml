@@ -75,7 +75,6 @@ jobs:
 
           # Check if the IP is IPv6 or IPv4
           if [[ $IP_ADDRESS =~ : ]]; then
-            IP_ADDRESS="[$IP_ADDRESS]"
             echo "IPv6 detected: $IP_ADDRESS. Continuing the process."
             echo "SSH_HOST=$IP_ADDRESS" >> $GITHUB_ENV
           else
@@ -95,6 +94,7 @@ jobs:
           host: ${{ env.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           port: 22
+          protocol: tcp6
           password: ${{ secrets.SSH_PASSWORD }}
           # Selecting all folders except "node_modules"
           source: ".,!node_modules"
