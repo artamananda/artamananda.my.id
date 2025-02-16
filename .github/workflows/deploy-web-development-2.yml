@@ -93,9 +93,9 @@ jobs:
         with:
           host: ${{ env.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          port: 22
-          protocol: tcp6
           password: ${{ secrets.SSH_PASSWORD }}
+          protocol: tcp6
+          port: 22
           # Selecting all folders except "node_modules"
           source: ".,!node_modules"
           # The path is based on the directory where the user logged into the server starts
@@ -107,8 +107,9 @@ jobs:
         with:
           host: ${{ env.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          port: 22
           password: ${{ secrets.SSH_PASSWORD }}
+          protocol: tcp6
+          port: 22
           script: |
             cd /home/arta/artamananda-my-id
             export NVM_DIR="$HOME/.nvm"
