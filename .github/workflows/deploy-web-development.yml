@@ -18,6 +18,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Pull latest changes
+        run: |
+          git fetch origin
+          git checkout development
+          git pull origin development
+
+      - name: "Automated Version Bump"
+        uses: "phips28/gh-action-bump-version@master"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          minor-wording: "add,Adds,new,feat,feature"
+          major-wording: "MAJOR,cut-major"
+          patch-wording: "patch,fixes,fix,adjust"
+          rc-wording: "RELEASE,alpha"
+          target-branch: "development"
+          commit-message: "CI: bumps version to {{version}} [skip ci]"
+
       - uses: culshaw/read-package-node-version-actions@v1
         id: package-json
 
@@ -35,12 +53,13 @@ jobs:
           echo HTTP_PORT=3000 >> .env
           echo APP_NAME=Artamananda >> .env
           echo APP_VERSION=${{ steps.package-json.outputs.version }} >> .env
+          echo APP_URL=artamananda.my.id >> .env
           echo BASE_API_URL=${{ secrets.BASE_API_URL }} >> .env
           echo STORAGE_URL=${{ secrets.STORAGE_URL }} >> .env
           echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
           cat .env
 
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
+      - run: flyctl deploy --remote-only --ha=false && flyctl scale count 1 -y
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

@@ -1,13 +1,15 @@
 "use client";
 
-import Image from "next/image";
-import ListButton from "./components/ListButton";
+import { Image } from "antd";
+import ListButton from "../components/ListButton";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
-import Footer from "./components/Footer";
+import Footer from "../components/Footer";
 import toast, { Toaster } from "react-hot-toast";
+import "react-chrome-dino-ts/index.css";
 
-const Visitor = dynamic(() => import("./components/Visitor"), { ssr: false });
+const Visitor = dynamic(() => import("../components/Visitor"), { ssr: false });
+const DinoGame = dynamic(() => import("react-chrome-dino-ts"), { ssr: false });
 
 export default function Home() {
   const [online, setOnline] = useState(0);
@@ -17,11 +19,13 @@ export default function Home() {
 
   const fetchVisitors = async () => {
     try {
-      const res = await fetch(`${process.env.BASE_API_URL}/visitors`);
+      const res = await fetch(`${process.env.BASE_API_URL}/visitors`, {
+        method: "GET",
+      });
       const result = await res.json();
-      setOnline(result?.payload?.onlineVisitors);
-      setTotal(result?.payload?.totalVisitors);
-      if (result) {
+      if (result?.payload) {
+        setOnline(result.payload.onlineVisitors || 0);
+        setTotal(result.payload.totalVisitors || 0);
         setIsOnline(true);
       }
     } catch (error) {
@@ -29,14 +33,26 @@ export default function Home() {
     }
   };
 
+  const postVisitors = async () => {
+    try {
+      await fetch(`${process.env.BASE_API_URL}/visitors`, {
+        method: "POST",
+      });
+    } catch (error) {}
+  };
+
   useEffect(() => {
     fetchVisitors();
 
     const intervalId = setInterval(() => {
+      postVisitors();
       fetchVisitors();
     }, 5000);
 
-    setIsFirstRender(false);
+    if (isFirstRender) {
+      postVisitors();
+      setIsFirstRender(false);
+    }
 
     return () => clearInterval(intervalId);
   }, []);
@@ -55,6 +71,7 @@ export default function Home() {
     <div
       style={{
         display: "flex",
+        flex: 1,
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
@@ -70,15 +87,18 @@ export default function Home() {
           gap: 10,
           width: "50vw",
           justifyContent: "center",
-          marginTop: 30,
+          alignItems: "center",
+          marginTop: 20,
         }}
       >
         <Image
           src={`${process.env.STORAGE_URL}/profile.jpg`}
-          alt="profile-pict"
           width={150}
-          height={150}
-          style={{ borderRadius: "50%", marginInline: "auto" }}
+          preview={false}
+          style={{
+            borderRadius: "50%",
+            marginInline: "auto",
+          }}
         />
         <div
           style={{
@@ -93,13 +113,13 @@ export default function Home() {
           <h3 style={{ textAlign: "center" }}>Artamananda</h3>
           <Image
             src={`${process.env.STORAGE_URL}/verified.png`}
-            alt="verified"
             width={20}
-            height={20}
+            preview={false}
           />
         </div>
-        <ListButton title="LinkedIn" href="/linkedin" />
-        <ListButton title="GitHub" href="/github" />
+        <ListButton title="Uptime Server" href="/home/uptime" isNew />
+        <ListButton title="LinkedIn" href="/home/linkedin" />
+        <ListButton title="GitHub" href="/home/github" />
         <div
           style={{
             display: "flex",
@@ -114,6 +134,25 @@ export default function Home() {
           <Visitor total={total} title="Total Visitors" />
         </div>
       </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          fontSize: 11,
+          flex: 1,
+          marginTop: -50,
+        }}
+      >
+        <DinoGame
+          instructions={
+            "On your pocket wizard (mobile), just give the screen a tap-tap to make the Dino soar over pesky obstacles, but if you’re on a big ol' laptop, hit that spacebar like it owes you money to get your Dino jumping!"
+          }
+        />
+      </div>
+
       <Footer />
     </div>
   );

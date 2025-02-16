@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "app_configs" (
     "id" SERIAL NOT NULL,
-    "key" TEXT NOT NULL,
+    "key" VARCHAR(100) NOT NULL,
     "value" TEXT NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -11,11 +11,11 @@ CREATE TABLE "app_configs" (
 
 -- CreateTable
 CREATE TABLE "users" (
-    "userId" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "profilePic" TEXT,
+    "userId" VARCHAR(100) NOT NULL,
+    "name" VARCHAR(100) NOT NULL,
+    "email" VARCHAR(100) NOT NULL,
+    "password" VARCHAR(100) NOT NULL,
+    "profilePic" VARCHAR(200),
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -26,8 +26,18 @@ CREATE TABLE "users" (
 CREATE TABLE "visitors" (
     "id" SERIAL NOT NULL,
     "metadata" JSONB,
+    "ipAddress" VARCHAR(100) NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "visitors_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "app_configs_key_key" ON "app_configs"("key");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "visitors_ipAddress_key" ON "visitors"("ipAddress");
