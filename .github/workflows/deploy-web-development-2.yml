@@ -100,7 +100,7 @@ jobs:
           echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile /dev/null" > ~/.ssh/config
 
           # Upload the files using SCP (excluding "node_modules")
-          scp -r ./ ${!SSH_HOST_V6}:${{ secrets.SSH_USER }}@${{ env.SSH_HOST }}:/home/arta/artamananda-my-id
+          scp -r ./ ${{ secrets.SSH_USER }}@${{ env.SSH_HOST_V6 }}:/home/arta/artamananda-my-id
 
       - name: Restart PM2
         uses: appleboy/ssh-action@master
