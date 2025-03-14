@@ -90,19 +90,17 @@ jobs:
         run: |
           yarn build
 
-      - name: Upload to Server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ env.SSH_HOST_V6 }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          protocol: tcp6
-          port: 22
-          # Selecting all folders except "node_modules"
-          source: ".,!node_modules"
-          # The path is based on the directory where the user logged into the server starts
-          target: "/home/arta/artamananda-my-id"
-          # rm: true
+      - name: Upload to Server using SCP
+        run: |
+          # Set up SSH key for passwordless login (you can skip this step if you're using a password)
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          # Disable strict host checking for automatic connections
+          echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile /dev/null" > ~/.ssh/config
+
+          # Upload the files using SCP (excluding "node_modules")
+          scp -r ./ ${!SSH_HOST_V6}:${{ secrets.SSH_USER }}@${{ env.SSH_HOST }}:/home/arta/artamananda-my-id
 
       - name: Restart PM2
         uses: appleboy/ssh-action@master
