@@ -75,8 +75,10 @@ jobs:
 
           # Check if the IP is IPv6 or IPv4
           if [[ $IP_ADDRESS =~ : ]]; then
+            IPV6="[$IP_ADDRESS]"
             echo "IPv6 detected: $IP_ADDRESS. Continuing the process."
             echo "SSH_HOST=$IP_ADDRESS" >> $GITHUB_ENV
+            echo "SSH_HOST_V6=$IPV6" >> $GITHUB_ENV
           else
             echo "IPv4 detected: $IP_ADDRESS. Stopping the process."
             exit 0  # Exit the workflow if it's IPv4
@@ -91,9 +93,9 @@ jobs:
       - name: Upload to Server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ env.SSH_HOST }}
+          host: ${{ env.SSH_HOST_V6 }}
           username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
           protocol: tcp6
           port: 22
           # Selecting all folders except "node_modules"
@@ -107,7 +109,7 @@ jobs:
         with:
           host: ${{ env.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
           protocol: tcp6
           port: 22
           script: |
