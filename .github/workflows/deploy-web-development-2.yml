@@ -75,10 +75,8 @@ jobs:
 
           # Check if the IP is IPv6 or IPv4
           if [[ $IP_ADDRESS =~ : ]]; then
-            IPV6="[$IP_ADDRESS]"
             echo "IPv6 detected: $IP_ADDRESS. Continuing the process."
             echo "SSH_HOST=$IP_ADDRESS" >> $GITHUB_ENV
-            echo "SSH_HOST_V6=$IPV6" >> $GITHUB_ENV
           else
             echo "IPv4 detected: $IP_ADDRESS. Stopping the process."
             exit 0  # Exit the workflow if it's IPv4
@@ -91,16 +89,17 @@ jobs:
           yarn build
 
       - name: Upload to Server
-        uses: nogsantos/scp-deploy@master
+        uses: appleboy/scp-action@master
         with:
-          host: ${{ env.SSH_HOST_V6 }}
-          user: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          host: ${{ env.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          protocol: tcp6
           port: 22
           # Selecting all folders except "node_modules"
-          src: ".,!node_modules"
+          source: ".,!node_modules"
           # The path is based on the directory where the user logged into the server starts
-          remote: "/home/arta/artamananda-my-id"
+          target: "/home/arta/artamananda-my-id"
           # rm: true
 
       - name: Restart PM2
@@ -108,7 +107,7 @@ jobs:
         with:
           host: ${{ env.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
           protocol: tcp6
           port: 22
           script: |
