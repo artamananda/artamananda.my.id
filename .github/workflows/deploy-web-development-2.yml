@@ -95,7 +95,7 @@ jobs:
         with:
           host: ${{ env.SSH_HOST_V6 }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
           protocol: tcp6
           port: 22
           # Selecting all folders except "node_modules"
@@ -109,7 +109,7 @@ jobs:
         with:
           host: ${{ env.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
           protocol: tcp6
           port: 22
           script: |
