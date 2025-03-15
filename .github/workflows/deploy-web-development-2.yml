@@ -90,17 +90,30 @@ jobs:
         run: |
           yarn build
 
-      - name: Upload to Server using SCP
-        run: |
-          # Set up SSH key for passwordless login (you can skip this step if you're using a password)
-          mkdir -p ~/.ssh
-          # echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          # chmod 600 ~/.ssh/id_rsa
-          # Disable strict host checking for automatic connections
-          echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile /dev/null" > ~/.ssh/config
+      - uses: vimtor/action-zip@v1.1
+        with:
+          files: .,!node_modules
+          recursive: false
+          dest: build.zip
 
-          # Upload the files using SCP (excluding "node_modules")
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" rsync -avz --exclude 'node_modules' ./ ${{ secrets.SSH_USER }}@${{ env.SSH_HOST_V6 }}:/home/arta/artamananda-my-id
+      - name: Upload Build
+        run: |
+          curl -X POST \
+            -F "file=@build.zip" \
+            -F "target=/home/arta/artamananda-my-id" \
+            https://action.artamananda.my.id/upload
+
+      # - name: Upload to Server using SCP
+      #   run: |
+      #     # Set up SSH key for passwordless login (you can skip this step if you're using a password)
+      #     mkdir -p ~/.ssh
+      #     # echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+      #     # chmod 600 ~/.ssh/id_rsa
+      #     # Disable strict host checking for automatic connections
+      #     echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile /dev/null" > ~/.ssh/config
+
+      #     # Upload the files using SCP (excluding "node_modules")
+      #     sshpass -p "${{ secrets.SSH_PASSWORD }}" rsync -avz --exclude 'node_modules' ./ ${{ secrets.SSH_USER }}@${{ env.SSH_HOST_V6 }}:/home/arta/artamananda-my-id
 
       # - name: Upload to Server
       #   uses: nogsantos/scp-deploy@master
