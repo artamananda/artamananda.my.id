@@ -90,18 +90,19 @@ jobs:
         run: |
           yarn build
 
-      - uses: vimtor/action-zip@v1.1
+      - name: Zip Build
+        uses: vimtor/action-zip@v1.1
         with:
           files: .,!node_modules
           recursive: false
           dest: build.zip
 
-      - name: Upload Build
+      - name: Upload Build and Running Script
         run: |
-          curl -X POST \
+          curl -X POST https://action.artamananda.my.id/upload \
             -F "file=@build.zip" \
             -F "target=/home/arta/artamananda-my-id" \
-            https://action.artamananda.my.id/upload
+            -F "script=cd /home/arta/artamananda-my-id && export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\" && yarn install && pm2 delete artamananda-my-id && pm2 start"
 
       # - name: Upload to Server using SCP
       #   run: |
@@ -128,18 +129,18 @@ jobs:
       #     remote: "/home/arta/artamananda-my-id"
       #     # rm: true
 
-      - name: Restart PM2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ env.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          protocol: tcp6
-          port: 22
-          script: |
-            cd /home/arta/artamananda-my-id
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            yarn install
-            pm2 delete artamananda-my-id
-            pm2 start
+      # - name: Restart PM2
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ env.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     password: ${{ secrets.SSH_PASSWORD }}
+      #     protocol: tcp6
+      #     port: 22
+      #     script: |
+      #       cd /home/arta/artamananda-my-id
+      #       export NVM_DIR="$HOME/.nvm"
+      #       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      #       yarn install
+      #       pm2 delete artamananda-my-id
+      #       pm2 start
