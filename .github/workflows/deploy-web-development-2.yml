@@ -102,7 +102,7 @@ jobs:
           curl -X POST https://action.artamananda.my.id/upload \
             -F "file=@build.zip" \
             -F "target=/home/arta/artamananda-my-id" \
-            -F "script=cd /home/arta/artamananda-my-id && export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\" && yarn install && pm2 delete artamananda-my-id && pm2 start"
+            -F "script=cd /home/arta/artamananda-my-id && yarn install && pm2 delete artamananda-my-id && pm2 start"
 
       # - name: Upload to Server using SCP
       #   run: |
