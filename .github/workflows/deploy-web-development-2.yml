@@ -67,22 +67,22 @@ jobs:
           echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
           cat .env
 
-      - name: Fetch SSH Host from API
-        id: fetch_ssh_host
-        run: |
-          # Get the IP from the API response
-          IP_ADDRESS=$(curl -s https://info.artamananda.my.id/my-ip | jq -r '.payload')
+      # - name: Fetch SSH Host from API
+      #   id: fetch_ssh_host
+      #   run: |
+      #     # Get the IP from the API response
+      #     IP_ADDRESS=$(curl -s https://info.artamananda.my.id/my-ip | jq -r '.payload')
 
-          # Check if the IP is IPv6 or IPv4
-          if [[ $IP_ADDRESS =~ : ]]; then
-            IPV6="[$IP_ADDRESS]"
-            echo "IPv6 detected: $IP_ADDRESS. Continuing the process."
-            echo "SSH_HOST=$IP_ADDRESS" >> $GITHUB_ENV
-            echo "SSH_HOST_V6=$IPV6" >> $GITHUB_ENV
-          else
-            echo "IPv4 detected: $IP_ADDRESS. Stopping the process."
-            exit 0  # Exit the workflow if it's IPv4
-          fi
+      #     # Check if the IP is IPv6 or IPv4
+      #     if [[ $IP_ADDRESS =~ : ]]; then
+      #       IPV6="[$IP_ADDRESS]"
+      #       echo "IPv6 detected: $IP_ADDRESS. Continuing the process."
+      #       echo "SSH_HOST=$IP_ADDRESS" >> $GITHUB_ENV
+      #       echo "SSH_HOST_V6=$IPV6" >> $GITHUB_ENV
+      #     else
+      #       echo "IPv4 detected: $IP_ADDRESS. Stopping the process."
+      #       exit 0  # Exit the workflow if it's IPv4
+      #     fi
 
       - name: Build
         env:
@@ -93,7 +93,7 @@ jobs:
       - name: Zip Build
         uses: vimtor/action-zip@v1.1
         with:
-          files: .,!node_modules
+          files: ./**, !node_modules/**
           recursive: false
           dest: build.zip
 
