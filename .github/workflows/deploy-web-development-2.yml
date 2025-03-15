@@ -91,11 +91,11 @@ jobs:
           yarn build
 
       - name: Zip Build
-        uses: vimtor/action-zip@v1.2
+        uses: thedoctor0/zip-release@0.7.5
         with:
-          files: / !node_modules/
-          recursive: false
-          dest: build.zip
+          type: "zip"
+          filename: "build.zip"
+          exclusions: "*.git* node_modules/* .editorconfig"
 
       - name: Upload Build and Running Script
         run: |
