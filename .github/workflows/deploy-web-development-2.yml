@@ -91,9 +91,9 @@ jobs:
           yarn build
 
       - name: Zip Build
-        uses: vimtor/action-zip@v1.1
+        uses: vimtor/action-zip@v1.2
         with:
-          files: ./**, !node_modules/**
+          files: / !node_modules/
           recursive: false
           dest: build.zip
 
